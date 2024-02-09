@@ -237,7 +237,7 @@ function getUserDataFromToken(req) {
     return new Promise((resolve, reject) => {
         const token = req.cookies.token;
         if (!token) {
-            reject(new Error('JWT token not provided'));
+            reject(new Error('Login first'));
         } else {
             jwt.verify(token, jwtSecret, {}, async (err, userData) => {
                 if (err) {
