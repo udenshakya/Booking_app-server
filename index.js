@@ -235,12 +235,21 @@ app.get('/allPlaces', async (req, res) => {
 
 function getUserDataFromToken(req) {
     return new Promise((resolve, reject) => {
-        jwt.verify(req.cookies.token, jwtSecret, {}, async (err, userData) => {
-            if (err) throw err;
-            resolve(userData);
-        });
+        const token = req.cookies.token;
+        if (!token) {
+            reject(new Error('JWT token not provided'));
+        } else {
+            jwt.verify(token, jwtSecret, {}, async (err, userData) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(userData);
+                }
+            });
+        }
     });
 }
+
 
 app.post('/bookings', async (req, res) => {
     try {
